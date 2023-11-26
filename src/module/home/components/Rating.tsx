@@ -2,6 +2,7 @@ import { Box } from '@chakra-ui/react'
 import React from 'react'
 import { RatingProps } from '../types/type'
 import { BsStar, BsStarFill, BsStarHalf } from 'react-icons/bs'
+
 const Rating = ({ rating, numReviews }: RatingProps) => {
 
     return (

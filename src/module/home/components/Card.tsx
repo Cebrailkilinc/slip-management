@@ -10,11 +10,12 @@ import {
     chakra,
     Tooltip,
     Button,
+    Image
 } from '@chakra-ui/react'
 import { FiShoppingCart } from 'react-icons/fi'
 import Rating from './Rating'
 import { ProductType } from '../types/type'
-import Image from 'next/image'
+
 const data = {
     isNew: true,
     imageURL:
@@ -27,29 +28,29 @@ const data = {
 
 
 const ProductCart = ({ product }: { product: ProductType }) => {
+
+    const addToCart = (id:string)=>{
+        console.log(id)
+        window.alert(id)
+    }
     return (
-        <Flex p={1} w="full" alignItems="center" justifyContent="center">
+        <Flex pb={5} p={1} w="full" alignItems="center" justifyContent="center">
             <Box
-                bg={useColorModeValue('white', 'gray.800')}
-                w={"250px"}
-                
+                bg={useColorModeValue('white', 'gray.800')}              
                 borderWidth="1px"
                 rounded="lg"
                 shadow="lg"
-                position="relative">
+                height={350}               
+                position="relative">                
                 {data.isNew && (
                     <Circle size="10px" position="absolute" top={2} right={2} bg="red.200" />
                 )}
                 <Image
-                    src={product.imageUrl}
-                    width={250}
-                    height={300}
-                    alt="Picture of the author"                    
-                    style={{ objectFit: "cover" }}
-                
+                    src={product.imageUrl}              
+                    alt="Picture of the author"                 
+                    boxSize='200px'          
+                    objectFit='cover'
                 />
-
-
                 <Box p="6">
                     <Box display="flex" alignItems="baseline">
                         {product.isNew && (
@@ -58,7 +59,6 @@ const ProductCart = ({ product }: { product: ProductType }) => {
                             </Badge>
                         )}
                     </Box>
-
                     <Box
                         fontSize="xl"
                         fontWeight="semibold"
@@ -67,8 +67,6 @@ const ProductCart = ({ product }: { product: ProductType }) => {
                         isTruncated>
                         {product.name}
                     </Box>
-
-
                     <Flex justifyContent="space-between" alignContent="center">
                         <Rating rating={product.rating} numReviews={data.numReviews} />
                         <Box fontSize="xl" color={useColorModeValue('gray.800', 'white')}>
@@ -78,12 +76,10 @@ const ProductCart = ({ product }: { product: ProductType }) => {
                             {data.price.toFixed(2)}
                         </Box>
                     </Flex>
-
-                    <Flex paddingTop={5} justifyContent="center" alignContent="center">
-                        <Button color={"orange"} >Add To Cart</Button>
+                    <Flex paddingTop={5}  justifyContent="center" alignContent="center">
+                        <Button onClick={()=>addToCart(product.id)} size={"sm"} bg={"orange"} fontSize={11} color={"white"} >Add To Cart</Button>
                     </Flex>
                 </Box>
-
             </Box>
         </Flex>
     )
