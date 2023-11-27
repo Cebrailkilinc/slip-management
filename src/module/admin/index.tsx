@@ -15,8 +15,7 @@ const Dashboard = () => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const {allOrder} = useAppSelector(state => state.dashboard)
     return (
-        <Box maxWidth={"3xl"} margin={"auto"}>
-            <InvoiceModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
+        <Box maxWidth={"3xl"} margin={"auto"}>            
             <Heading display={"flex"} justifyContent={"start"} as='h2' size='2xl' p={10}>
                 Yönetim Paneli
             </Heading>

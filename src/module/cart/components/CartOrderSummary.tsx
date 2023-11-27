@@ -51,7 +51,7 @@ const formattedDate = formatDate(today);
   const newOrderInfo = {
     orderNumber: 1000 + allOrder.length,
     orderDate: formattedDate,    
-    products: [productsInCart]
+    products: productsInCart
   }
 
   const handleCreateNewOrder = ()=>{

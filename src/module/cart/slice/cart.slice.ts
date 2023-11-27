@@ -9,17 +9,26 @@ const initialState: CartResponse = {
 };
 
 export const cartSlice = createSlice({
-    name: 'auth',
+    name: 'cart',
     initialState,
     reducers: {
-        addProductTocart:(state,action)=>{
-            state.productsInCart.push(action.payload)
+        addProductTocart: (state, action) => {
+            const { id, name, } = action.payload;
+            const existingItem = state.productsInCart.find(item => item.id === id);
+
+            if (existingItem) {
+                // Eğer ürün sepette varsa, sayısını arttır
+                existingItem.quantity += 1;
+            } else {
+                // Eğer ürün sepette yoksa, yeni bir öğe olarak ekle
+                state.productsInCart.push(action.payload);
+            }
         }
     },
 
 });
 
-export const { addProductTocart} = cartSlice.actions;
+export const { addProductTocart } = cartSlice.actions;
 
 
 export default cartSlice.reducer;

@@ -5,7 +5,7 @@ export const cartData = [
       currency: 'GBP',
       name: 'Ferragamo bag',
       description: 'Tan, 40mm',
-      quantity: 3,
+      quantity: 1,     
       isNew:false,
       rating:3,
       imageUrl:
@@ -17,7 +17,7 @@ export const cartData = [
       currency: 'GBP',
       name: 'Bamboo Tan',
       description: 'Tan, 40mm',
-      quantity: 3,
+      quantity: 1,     
       isNew:false,
       rating:3,
       imageUrl:
@@ -29,7 +29,7 @@ export const cartData = [
       currency: 'GBP',
       name: 'Yeezy Sneakers',
       description: 'Tan, 40mm',
-      quantity: 3,
+      quantity: 1,     
       isNew:false,
       rating:5,
       imageUrl:

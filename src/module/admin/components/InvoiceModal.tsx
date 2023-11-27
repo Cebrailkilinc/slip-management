@@ -19,8 +19,9 @@ import '@react-pdf-viewer/core/lib/styles/index.css';
 
 import { cartData } from "@/package/data/product"
 import { useAppSelector } from '@/package/hooks';
+import { OrderResponse } from '../types/type';
 
-const InvoiceModal = ({ isOpen, onOpen, onClose }: { isOpen: boolean, onOpen: () => void, onClose: () => void }) => {
+const InvoiceModal = ({ isOpen, onOpen, onClose, order }: { isOpen: boolean, onOpen: () => void, onClose: () => void, order: OrderResponse | null }) => {
 
     const [modifiedPdf, setModifiedPdf] = useState<Uint8Array | null>(null);
     const [file, setFile] = useState<string | ArrayBuffer | null>("");
@@ -36,59 +37,39 @@ const InvoiceModal = ({ isOpen, onOpen, onClose }: { isOpen: boolean, onOpen: ()
         const firstPage = pages[0];
         const { width, height } = firstPage.getSize();
 
-        console.log(allOrder)
-        //Id column
-        allOrder && allOrder.map((products, i: number) => {
-            products.products.map((product, i: number) => {
-                console.log(product.id)
-                firstPage.drawText(product && product.id.toString(), {
-                    x: 60,
-                    y: 525 - i * 26.5,
-                    size: 10,
-                    font: helveticaFont,
-                    color: rgb(0.95, 0.1, 0.1),
-                })
+        console.log(order)
+
+        order && order.products.map((product, i) => {
+            firstPage.drawText(product && product.id.toString(), {
+                x: 60,
+                y: 525 - i * 26.5,
+                size: 10,
+                font: helveticaFont,
+                color: rgb(0.95, 0.1, 0.1),
             })
-
-
-
-        })
-
-        //name column
-        cartData && cartData.map((item, i: number) => {
-            firstPage.drawText(item.name, {
+            firstPage.drawText(product && product.name, {
                 x: 110,
                 y: 525 - i * 26.5,
                 size: 10,
                 font: helveticaFont,
                 color: rgb(0.95, 0.1, 0.1),
-            })
-        })
-        cartData && cartData.map((item, i: number) => {
-            //Price column
-            firstPage.drawText(item.price.toString(), {
-                x: 345,
-                y: 525 - i * 26.5,
-                size: 10,
-                font: helveticaFont,
-                color: rgb(0.95, 0.1, 0.1),
-            })
-        })
-
-        cartData && cartData.map((item, i: number) => {
-            //Quantity column
-            firstPage.drawText(item.quantity.toString(), {
+            }),
+                firstPage.drawText(product && product.price.toString(), {
+                    x: 345,
+                    y: 525 - i * 26.5,
+                    size: 10,
+                    font: helveticaFont,
+                    color: rgb(0.95, 0.1, 0.1),
+                })
+            firstPage.drawText(product.quantity.toString(), {
                 x: 435,
                 y: 525 - i * 26.5,
                 size: 10,
                 font: helveticaFont,
                 color: rgb(0.95, 0.1, 0.1),
             })
-        })
-
-        cartData && cartData.map((item, i: number) => {
-            //Quantity column
-            firstPage.drawText((item.price * item.quantity).toString(), {
+            //total price
+            firstPage.drawText((product.price * product.quantity).toString(), {
                 x: 490,
                 y: 525 - i * 26.5,
                 size: 10,
@@ -97,8 +78,10 @@ const InvoiceModal = ({ isOpen, onOpen, onClose }: { isOpen: boolean, onOpen: ()
             })
         })
 
+
+
         // Invoice Number
-        firstPage.drawText("52148", {
+        firstPage.drawText(order != null ? order.orderNumber?.toString() : "", {
             x: 450,
             y: 647,
             size: 12,
@@ -107,7 +90,7 @@ const InvoiceModal = ({ isOpen, onOpen, onClose }: { isOpen: boolean, onOpen: ()
         })
 
         // Invoice Date
-        firstPage.drawText("11/07/2023", {
+        firstPage.drawText(order != null ? order.orderDate?.toString() : "", {
             x: 425,
             y: 627,
             size: 12,
@@ -129,7 +112,12 @@ const InvoiceModal = ({ isOpen, onOpen, onClose }: { isOpen: boolean, onOpen: ()
             })
 
         // Sub Total
-        firstPage.drawText("513,00", {
+        let subTotal = 0;
+        order && order.products.map((product) => {
+            subTotal = subTotal + product.price * product.quantity;
+        });
+
+        firstPage.drawText(subTotal.toFixed(2).toString(), {
             x: 450,
             y: 217,
             size: 11,
@@ -138,7 +126,7 @@ const InvoiceModal = ({ isOpen, onOpen, onClose }: { isOpen: boolean, onOpen: ()
         })
 
         // Tax
-        firstPage.drawText("Tax", {
+        firstPage.drawText("%0", {
             x: 412,
             y: 195,
             size: 11,
@@ -146,8 +134,8 @@ const InvoiceModal = ({ isOpen, onOpen, onClose }: { isOpen: boolean, onOpen: ()
             color: rgb(0.95, 0.1, 0.1),
         })
 
-        // Total
-        firstPage.drawText("500.00", {
+        // Total        
+        firstPage.drawText(subTotal.toFixed(2).toString(), {
             x: 435,
             y: 156,
             size: 13,
@@ -183,6 +171,9 @@ const InvoiceModal = ({ isOpen, onOpen, onClose }: { isOpen: boolean, onOpen: ()
     };
 
     const handleWriteInvoice = (file: any) => {
+        if (allOrder.length < 1) {
+            return window.alert("Lütfen sipariş oluşturun")
+        }
         modifyPdf(file)
     }
 
@@ -190,7 +181,7 @@ const InvoiceModal = ({ isOpen, onOpen, onClose }: { isOpen: boolean, onOpen: ()
         setModifiedPdf(null)
         setFile("")
     }
-    console.log(file)
+
     return (
         <>
             <Modal isOpen={isOpen} onClose={onClose} size={"3xl"} >
@@ -206,7 +197,6 @@ const InvoiceModal = ({ isOpen, onOpen, onClose }: { isOpen: boolean, onOpen: ()
                                     id="file_input"
                                     type="file"
                                 />
-                                <Button fontSize='10px' colorScheme='blue' size='sm' onClick={() => deletFile()}>Belgeyi Ekle</Button>
                                 <Button fontSize='10px' colorScheme='blue' size='sm' onClick={() => deletFile()}>Belgeyi Temizle</Button>
                             </Box>
                             <Box >

@@ -1,28 +1,9 @@
 import { ProductType } from '@/module/home/types/type';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { AllOrder } from '../types/type';
 
-
-interface OrderResponse {
-    orderNumber: number | null;
-    orderDate: Date | null;
-    total: number | null;
-    products: ProductType[];
-  }
-  
-  interface AllOrder {
-    allOrder: OrderResponse[];
-  }
-  
   const initialState: AllOrder = {
-    allOrder: [
-      {
-        orderNumber: null,
-        orderDate: null,
-        total: null,
-        products: []
-      }
-      // Buraya başka OrderResponse objeleri ekleyebilirsiniz...
-    ]
+    allOrder: []
   };
   
 
