@@ -11,8 +11,11 @@ import {
     TableContainer,
     Button,
 } from '@chakra-ui/react'
-const ProductTable = ({ isOpen, onOpen, onClose }: { isOpen: boolean, onOpen: () => void, onClose: () => void }) => {
-   
+import { useAppSelector } from '@/package/hooks'
+const OrderTable = ({ isOpen, onOpen, onClose }: { isOpen: boolean, onOpen: () => void, onClose: () => void }) => {
+
+    const { allOrder } = useAppSelector(state => state.dashboard)
+
     return (
         <TableContainer>
             <Table variant='striped' colorScheme='teal'>
@@ -21,30 +24,32 @@ const ProductTable = ({ isOpen, onOpen, onClose }: { isOpen: boolean, onOpen: ()
                     <Tr>
                         <Th>Sipariş No</Th>
                         <Th>Tarih</Th>
-                        <Th>Toplam</Th>                        
+                        <Th>Toplam</Th>
                         <Th >Fatura Oluştur</Th>
                     </Tr>
                 </Thead>
                 <Tbody>
+
+                    {
+                        allOrder && allOrder.length > 1 ? allOrder.map((item) => {
+                            return (
                     <Tr>
-                        <Td>1001</Td>
-                        <Td>11/05/2023</Td>
+                        <Td>{item.orderNumber}</Td>
+                        <Td>{item.orderDate}</Td>
                         <Td isNumeric>25.4</Td>
                         <Td>
                             <Button onClick={onOpen} >Belge Oluştur</Button>
                         </Td>
                     </Tr>
+                    )
+                        }) : null
+                    }
+
+
                 </Tbody>
-                <Tfoot>
-                    <Tr>
-                        <Th>To convert</Th>
-                        <Th>into</Th>
-                        <Th isNumeric>multiply by</Th>
-                    </Tr>
-                </Tfoot>
             </Table>
         </TableContainer>
     )
 }
 
-export default ProductTable
+export default OrderTable
