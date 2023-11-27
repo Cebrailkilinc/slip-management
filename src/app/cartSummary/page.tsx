@@ -1,4 +1,4 @@
-import { CartSummaryLayout } from '@/module/cart'
+import CartSummaryLayout  from '@/module/cart'
 import React from 'react'
 
 const CartSummary = () => {

@@ -4,7 +4,7 @@ import {
     Box,
     Flex,
     Avatar,
-    HStack,    
+    HStack,
     IconButton,
     Button,
     Menu,
@@ -15,14 +15,17 @@ import {
     useDisclosure,
     useColorModeValue,
     Stack,
+    Badge
 } from '@chakra-ui/react'
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
-
+import { IoIosBasket } from "react-icons/io";
+import Link from 'next/link';
+import { useAppSelector } from '../hooks';
 interface Props {
     children: React.ReactNode
 }
 
-const Links = ['Dashboard', 'Projects', 'Team']
+const Links = ['dashboard']
 
 const NavLink = (props: Props) => {
     const { children } = props
@@ -45,6 +48,7 @@ const NavLink = (props: Props) => {
 
 const Navbar = () => {
     const { isOpen, onOpen, onClose } = useDisclosure()
+    const { productsInCart } = useAppSelector(state => state.cart)
 
     return (
         <>
@@ -58,14 +62,24 @@ const Navbar = () => {
                         onClick={isOpen ? onClose : onOpen}
                     />
                     <HStack spacing={8} alignItems={'center'}>
-                        <Box>Logo</Box>
+                        <Link href={"/"}>
+                            <Box>Logo</Box>
+                        </Link>
                         <HStack as={'nav'} spacing={4} display={{ base: 'none', md: 'flex' }}>
                             {Links.map((link) => (
-                                <NavLink key={link}>{link}</NavLink>
+                                <Link href={link}>{link}</Link>
                             ))}
                         </HStack>
                     </HStack>
-                    <Flex alignItems={'center'}>
+                    <Flex gap={5} alignItems={'center'}>
+                        <Link href="/cartSummary" >
+                            <Box position={"relative"} >
+                                <Badge size={"small"} position={"absolute"} colorScheme='purple'>{productsInCart.length}</Badge>
+                                <IoIosBasket size={30} />
+                            </Box>
+
+                        </Link>
+
                         <Menu>
                             <MenuButton
                                 as={Button}
@@ -99,7 +113,7 @@ const Navbar = () => {
                         </Stack>
                     </Box>
                 ) : null}
-            </Box>           
+            </Box>
         </>
     )
 }

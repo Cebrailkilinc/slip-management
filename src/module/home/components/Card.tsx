@@ -16,6 +16,9 @@ import { FiShoppingCart } from 'react-icons/fi'
 import Rating from './Rating'
 import { ProductType } from '../types/type'
 
+//Redux
+import { useAppDispatch, useAppSelector } from '@/package/hooks'
+import { addProductTocart } from '@/module/cart/slice/cart.slice'
 const data = {
     isNew: true,
     imageURL:
@@ -29,9 +32,12 @@ const data = {
 
 const ProductCart = ({ product }: { product: ProductType }) => {
 
+    const {productsInCart} = useAppSelector(state => state.cart)
+    const dispatch = useAppDispatch();
+
+    console.log(productsInCart)
     const addToCart = (id:string)=>{
-        console.log(id)
-        window.alert(id)
+      dispatch(addProductTocart(product))
     }
     return (
         <Flex pb={5} p={1} w="full" alignItems="center" justifyContent="center">

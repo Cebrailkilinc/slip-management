@@ -28,7 +28,7 @@ import {
     )
   }
   
-  export const CartOrderSummary = () => {
+  const CartOrderSummary = () => {
     return (
       <Stack spacing="8" borderWidth="1px" rounded="lg" padding="8" width="full">
         <Heading size="md">Order Summary</Heading>
@@ -55,8 +55,9 @@ import {
           </Flex>
         </Stack>
         <Button colorScheme="blue" size="lg" fontSize="md" rightIcon={<FaArrowRight />}>
-          Checkout
+          Onayla
         </Button>
       </Stack>
     )
   }
+  export default CartOrderSummary; 

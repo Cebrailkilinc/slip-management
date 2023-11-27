@@ -31,7 +31,7 @@ const QuantitySelect = (props: SelectProps) => {
   )
 }
 
-export const CartItem = (props: CartItemProps) => {
+ const CartItem = (props: CartItemProps) => {
   const {
     isGiftWrapping,
     name,
@@ -87,3 +87,5 @@ export const CartItem = (props: CartItemProps) => {
     </Flex>
   )
 }
+
+export default CartItem;
