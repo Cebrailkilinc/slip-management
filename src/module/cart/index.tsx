@@ -13,7 +13,7 @@ import CartOrderSummary from "@/module/cart/components/CartOrderSummary"
 import { cartData } from "@/package/data/product"
 import { useAppSelector } from '@/package/hooks'
 const CartSummaryLayout = () => {
-  const {productsInCart} = useAppSelector(state => state.cart)
+  const { productsInCart } = useAppSelector(state => state.cart)
   return (
     <Box
       maxW={{ base: '3xl', lg: '7xl' }}
@@ -28,7 +28,7 @@ const CartSummaryLayout = () => {
       >
         <Stack spacing={{ base: '8', md: '10' }} flex="2">
           <Heading fontSize="2xl" fontWeight="extrabold">
-            Shopping Cart (3 items)
+            Shopping Cart ({productsInCart.length})
           </Heading>
 
           <Stack spacing="6">

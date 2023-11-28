@@ -12,12 +12,9 @@ import {
     Box
 } from '@chakra-ui/react'
 
-import { degrees, PDFDocument, rgb, StandardFonts } from 'pdf-lib';
-import { SpecialZoomLevel, Viewer } from '@react-pdf-viewer/core';
+import {PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import { decode, encode } from "base64-arraybuffer";
 import '@react-pdf-viewer/core/lib/styles/index.css';
-
-import { cartData } from "@/package/data/product"
 import { useAppSelector } from '@/package/hooks';
 import { OrderResponse } from '../types/type';
 
@@ -28,124 +25,125 @@ const InvoiceModal = ({ isOpen, onOpen, onClose, order }: { isOpen: boolean, onO
     const { allOrder } = useAppSelector(state => state.dashboard)
 
     async function modifyPdf(file: any) {
-        const existingPdfBytes = decode(file);
+        try {
+            const existingPdfBytes = decode(file);
 
-        const pdfDoc = await PDFDocument.load(existingPdfBytes);
+            const pdfDoc = await PDFDocument.load(existingPdfBytes);
 
-        const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
-        const pages = pdfDoc.getPages();
-        const firstPage = pages[0];
-        const { width, height } = firstPage.getSize();
+            const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
+            const pages = pdfDoc.getPages();
+            const firstPage = pages[0];
+            const { width, height } = firstPage.getSize();
 
-        console.log(order)
+            console.log(order)
 
-        order && order.products.map((product, i) => {
-            firstPage.drawText(product && product.id.toString(), {
-                x: 60,
-                y: 525 - i * 26.5,
-                size: 10,
-                font: helveticaFont,
-                color: rgb(0.95, 0.1, 0.1),
-            })
-            firstPage.drawText(product && product.name, {
-                x: 110,
-                y: 525 - i * 26.5,
-                size: 10,
-                font: helveticaFont,
-                color: rgb(0.95, 0.1, 0.1),
-            }),
-                firstPage.drawText(product && product.price.toString(), {
-                    x: 345,
+            order && order.products.map((product, i) => {
+                firstPage.drawText(product && product.id.toString(), {
+                    x: 60,
                     y: 525 - i * 26.5,
                     size: 10,
                     font: helveticaFont,
                     color: rgb(0.95, 0.1, 0.1),
                 })
-            firstPage.drawText(product.quantity.toString(), {
+                firstPage.drawText(product && product.name, {
+                    x: 110,
+                    y: 525 - i * 26.5,
+                    size: 10,
+                    font: helveticaFont,
+                    color: rgb(0.95, 0.1, 0.1),
+                }),
+                    firstPage.drawText(product && product.price.toString(), {
+                        x: 345,
+                        y: 525 - i * 26.5,
+                        size: 10,
+                        font: helveticaFont,
+                        color: rgb(0.95, 0.1, 0.1),
+                    })
+                firstPage.drawText(product.quantity.toString(), {
+                    x: 435,
+                    y: 525 - i * 26.5,
+                    size: 10,
+                    font: helveticaFont,
+                    color: rgb(0.95, 0.1, 0.1),
+                })
+                //total price
+                firstPage.drawText((product.price * product.quantity).toFixed(2).toString(), {
+                    x: 490,
+                    y: 525 - i * 26.5,
+                    size: 10,
+                    font: helveticaFont,
+                    color: rgb(0.95, 0.1, 0.1),
+                })
+            })
+
+            // Invoice Number
+            firstPage.drawText(order != null ? order.orderNumber?.toString() : "", {
+                x: 450,
+                y: 647,
+                size: 12,
+                font: helveticaFont,
+                color: rgb(0.95, 0.1, 0.1),
+            })
+
+            // Invoice Date
+            firstPage.drawText(order != null ? order.orderDate?.toString() : "", {
+                x: 425,
+                y: 627,
+                size: 12,
+                font: helveticaFont,
+                color: rgb(0.95, 0.1, 0.1),
+            })
+
+            // Invoice To
+            firstPage.drawText(
+                `Mario can use three basic three power-ups three basic three power-ups`,
+                {
+                    x: 50,
+                    y: 640,
+                    size: 10,
+                    font: helveticaFont,
+                    color: rgb(0.95, 0.1, 0.1),
+                    maxWidth: 120,
+                    lineHeight: 9
+                })
+
+            // Sub Total
+            let subTotal = 0;
+            order && order.products.map((product) => {
+                subTotal = subTotal + product.price * product.quantity;
+            });
+
+            firstPage.drawText(subTotal.toFixed(2).toString(), {
+                x: 450,
+                y: 217,
+                size: 11,
+                font: helveticaFont,
+                color: rgb(0.95, 0.1, 0.1),
+            })
+
+            // Tax
+            firstPage.drawText("%0", {
+                x: 412,
+                y: 195,
+                size: 11,
+                font: helveticaFont,
+                color: rgb(0.95, 0.1, 0.1),
+            })
+
+            // Total        
+            firstPage.drawText(subTotal.toFixed(2).toString(), {
                 x: 435,
-                y: 525 - i * 26.5,
-                size: 10,
+                y: 156,
+                size: 13,
                 font: helveticaFont,
                 color: rgb(0.95, 0.1, 0.1),
             })
-            //total price
-            firstPage.drawText((product.price * product.quantity).toString(), {
-                x: 490,
-                y: 525 - i * 26.5,
-                size: 10,
-                font: helveticaFont,
-                color: rgb(0.95, 0.1, 0.1),
-            })
-        })
 
-
-
-        // Invoice Number
-        firstPage.drawText(order != null ? order.orderNumber?.toString() : "", {
-            x: 450,
-            y: 647,
-            size: 12,
-            font: helveticaFont,
-            color: rgb(0.95, 0.1, 0.1),
-        })
-
-        // Invoice Date
-        firstPage.drawText(order != null ? order.orderDate?.toString() : "", {
-            x: 425,
-            y: 627,
-            size: 12,
-            font: helveticaFont,
-            color: rgb(0.95, 0.1, 0.1),
-        })
-
-        // Invoice To
-        firstPage.drawText(
-            `Mario can use three basic three power-ups three basic three power-ups`,
-            {
-                x: 50,
-                y: 640,
-                size: 10,
-                font: helveticaFont,
-                color: rgb(0.95, 0.1, 0.1),
-                maxWidth: 120,
-                lineHeight: 9
-            })
-
-        // Sub Total
-        let subTotal = 0;
-        order && order.products.map((product) => {
-            subTotal = subTotal + product.price * product.quantity;
-        });
-
-        firstPage.drawText(subTotal.toFixed(2).toString(), {
-            x: 450,
-            y: 217,
-            size: 11,
-            font: helveticaFont,
-            color: rgb(0.95, 0.1, 0.1),
-        })
-
-        // Tax
-        firstPage.drawText("%0", {
-            x: 412,
-            y: 195,
-            size: 11,
-            font: helveticaFont,
-            color: rgb(0.95, 0.1, 0.1),
-        })
-
-        // Total        
-        firstPage.drawText(subTotal.toFixed(2).toString(), {
-            x: 435,
-            y: 156,
-            size: 13,
-            font: helveticaFont,
-            color: rgb(0.95, 0.1, 0.1),
-        })
-
-        const modifiedBytes = await pdfDoc.save();
-        setModifiedPdf(new Uint8Array(modifiedBytes));
-
+            const modifiedBytes = await pdfDoc.save();
+            setModifiedPdf(new Uint8Array(modifiedBytes));
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     // function bufferToBase64(buf: any) {

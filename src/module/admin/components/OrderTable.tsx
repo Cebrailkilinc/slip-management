@@ -44,18 +44,18 @@ const OrderTable = ({ isOpen, onOpen, onClose }: { isOpen: boolean, onOpen: () =
                 </Thead>
                 <Tbody>
                     {
-                        allOrder && allOrder.length > 1 ? allOrder.map((item) => {
+                        allOrder &&  allOrder.map((item) => {
                             return (
                                 <Tr>
                                     <Td>{item.orderNumber && item.orderNumber}</Td>
-                                    <Td>{item.orderDate !== null ? item.orderDate : "11/08/2023"}</Td>
+                                    <Td>{item.orderDate }</Td>
                                     <Td isNumeric>25.4</Td>
                                     <Td>
                                         <Button onClick={() => handleWriteOrderToPdfFile(item)} >Belge Oluştur</Button>
                                     </Td>
                                 </Tr>
                             )
-                        }) : null
+                        }) 
                     }
                 </Tbody>
             </Table>
