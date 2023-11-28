@@ -207,7 +207,7 @@ const InvoiceModal = (
                             </Box>
                             <Box >
                                 {modifiedPdf && (
-                                    <Box display={"flex"} alignItems={"center"} gap={5}>
+                                    <Box  display={"flex"} alignItems={"center"} gap={5}>
                                         {file && typeof file === 'string' && <iframe src={file} height="300px" />}
                                         <iframe src={`data:application/pdf;base64,${encode(modifiedPdf)}`} height="300px" ></iframe>
                                     </Box>

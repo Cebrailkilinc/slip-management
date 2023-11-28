@@ -44,9 +44,9 @@ const OrderTable = ({ isOpen, onOpen, onClose }: { isOpen: boolean, onOpen: () =
                 </Thead>
                 <Tbody>
                     {
-                        allOrder &&  allOrder.map((item) => {
+                        allOrder &&  allOrder.map((item,i) => {
                             return (
-                                <Tr>
+                                <Tr key={i} >
                                     <Td>{item.orderNumber && item.orderNumber}</Td>
                                     <Td>{item.orderDate }</Td>
                                     <Td isNumeric>25.4</Td>
