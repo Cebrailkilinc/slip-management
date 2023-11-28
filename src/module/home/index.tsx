@@ -12,7 +12,7 @@ import { ProductType } from './types/type'
 
 
 const HomePageLayout = () => {
-  console.log(cartData)
+  
   return (
     <Grid padding={5} templateColumns='repeat(5, 1fr)' gap={8}>
       {

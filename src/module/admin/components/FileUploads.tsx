@@ -24,8 +24,6 @@ const FileUploads = () => {
 
     };
 
-    console.log(selectedFile)
-
     return (
         <div>
             <input type="file" accept=".pdf" onChange={changeHandler} />

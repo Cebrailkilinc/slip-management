@@ -35,7 +35,7 @@ const ProductCart = ({ product }: { product: ProductType }) => {
     const {productsInCart} = useAppSelector(state => state.cart)
     const dispatch = useAppDispatch();
 
-    console.log(productsInCart)
+
     const addToCart = (id:string)=>{
       dispatch(addProductTocart(product))
     }

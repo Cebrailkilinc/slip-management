@@ -56,9 +56,9 @@ const formattedDate = formatDate(today);
 
   const handleCreateNewOrder = ()=>{
       dispatch(createNewOrder(newOrderInfo))
-      console.log("object")
+      
   }
-  console.log(allOrder)
+
   return (
     <Stack spacing="8" borderWidth="1px" rounded="lg" padding="8" width="full">
       <Heading size="md">Order Summary</Heading>

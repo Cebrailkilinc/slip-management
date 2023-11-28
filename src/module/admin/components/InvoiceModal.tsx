@@ -43,7 +43,6 @@ const InvoiceModal = (
             const firstPage = pages[0];
             const { width, height } = firstPage.getSize();
 
-            console.log(order)
 
             order && order.products.map((product, i) => {
                 firstPage.drawText(product && product.id.toString(), {
@@ -164,8 +163,7 @@ const InvoiceModal = (
 
     //Select file ffrom local as base64
     const handleImageSelectLocal = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files[0]) {
-            console.log(e.target.files)
+        if (e.target.files && e.target.files[0]) {           
             const reader = new FileReader();
             reader.onload = function (event) {
                 if (event.target && event.target.result) {
