@@ -66,8 +66,8 @@ const Navbar = () => {
                             <Box>Logo</Box>
                         </Link>
                         <HStack as={'nav'} spacing={4} display={{ base: 'none', md: 'flex' }}>
-                            {Links.map((link) => (
-                                <Link href={link}>{link}</Link>
+                            {Links.map((link,i:number) => (
+                                <Link key={i} href={link}>{link}</Link>
                             ))}
                         </HStack>
                     </HStack>
