@@ -12,13 +12,21 @@ import {
     Box
 } from '@chakra-ui/react'
 
-import {PDFDocument, rgb, StandardFonts } from 'pdf-lib';
+import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import { decode, encode } from "base64-arraybuffer";
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import { useAppSelector } from '@/package/hooks';
 import { OrderResponse } from '../types/type';
 
-const InvoiceModal = ({ isOpen, onOpen, onClose, order }: { isOpen: boolean, onOpen: () => void, onClose: () => void, order: OrderResponse | null }) => {
+const InvoiceModal = (
+    { isOpen, onOpen, onClose, order }
+        :
+        {
+            isOpen: boolean,
+            onOpen: () => void,
+            onClose: () => void,
+            order: OrderResponse | null
+        }) => {
 
     const [modifiedPdf, setModifiedPdf] = useState<Uint8Array | null>(null);
     const [file, setFile] = useState<string | ArrayBuffer | null>("");
